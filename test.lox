@@ -1,0 +1,5 @@
+fun pizza() {
+    print("cheese lmao");
+    runNumber(2 + 100);
+    // Cool!
+}
