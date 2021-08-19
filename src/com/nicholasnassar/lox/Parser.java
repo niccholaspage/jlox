@@ -48,6 +48,10 @@ public class Parser {
     }
 
     private Stmt statement() {
+        if (match(TokenType.IF)) {
+            return ifStatement();
+        }
+
         if (match(TokenType.PRINT)) {
             return printStatement();
         }
@@ -57,6 +61,23 @@ public class Parser {
         }
 
         return expressionStatement();
+    }
+
+    private Stmt ifStatement() {
+        consume(TokenType.LEFT_PAREN, "Expect '(' after 'if'.");
+
+        Expr condition = expression();
+
+        consume(TokenType.RIGHT_PAREN, "Expect ')' after if condition.");
+
+        Stmt thenBranch = statement();
+        Stmt elseBranch = null;
+
+        if (match(TokenType.ELSE)) {
+            elseBranch = statement();
+        }
+
+        return new Stmt.If(condition, thenBranch, elseBranch);
     }
 
     private List<Stmt> block() {
